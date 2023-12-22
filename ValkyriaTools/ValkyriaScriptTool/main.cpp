@@ -68,8 +68,7 @@ namespace worker {
 	}
 
 	static void exports_as_afile(fsys::path path) {
-		std::string ext(fsys::extension(path));
-		if (ext.empty() || ext != ".sdt") return;
+		if (fsys::extension(path) != ".sdt") return;
 		if (!fsys::make(OUT_PATH)) {
 			throw std::exception(
 				"Failed to make output directory."
