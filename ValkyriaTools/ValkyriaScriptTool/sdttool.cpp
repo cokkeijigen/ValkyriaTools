@@ -306,6 +306,19 @@ namespace sdt::tool {
 		return writebuffer.save(out.c_str());
 	}
 
+	static inline void make_check_data(files::data& oldSdt, files::writebuffer& wtBuf) {
+		size_t hdr_off = *(uint32_t*)(oldSdt.buffer + 0x00);
+		size_t cdt_off = *(uint32_t*)(oldSdt.buffer + 0x10);
+		uint8_t* check = oldSdt.buffer + cdt_off;
+		size_t length = hdr_off - cdt_off - 1;
+		uint8_t oldSz = (uint8_t)oldSdt.size;
+		uint8_t newSz = (uint8_t)wtBuf.size();
+		do { 
+			*check = (*check - oldSz) + newSz;
+		} while(*(++check));
+		wtBuf.overwrite(cdt_off, check - length, length);
+	}
+
 	bool text_importer(std::string txt, std::string sdt, std::string out) {
 		sdt::TextHelper texts(txt.c_str(), DefaultCodePage);
 		if (!texts.texts.size()) return false;
@@ -408,6 +421,7 @@ namespace sdt::tool {
 			default: break;
 			}
 		});
+		sdt::tool::make_check_data(data, writebuffer);
 		return writebuffer.save(out.c_str());
 	}
 }

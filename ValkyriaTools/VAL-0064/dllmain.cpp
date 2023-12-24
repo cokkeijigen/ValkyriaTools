@@ -1,7 +1,7 @@
-#include "../includes.h"
+ï»¿#include "../includes.h"
 
 /**
-    Game: ¥×¥ì¥¤£¡¥×¥ì¥¤£¡¥×¥ì¥¤£¡¥í¥Ã¥¯£¡
+    Game: ãƒ—ãƒ¬ã‚¤ï¼ãƒ—ãƒ¬ã‚¤ï¼ãƒ—ãƒ¬ã‚¤ï¼ãƒ­ãƒƒã‚¯ï¼
     Version: VAL-0064
     https://vndb.org/v3884
 */
@@ -34,8 +34,8 @@ namespace Hook::Type {
 namespace Hook {
 
     const char* chsFilePath = ".\\cn_Data\\";
-    const char* wdTitleName = "¥×¥ì¥¤£¡¥×¥ì¥¤£¡¥×¥ì¥¤£¡¥í¥Ã¥¯£¡ Test";
-    const char* newFontName = "ºÚÌå";
+    const char* wdTitleName = "ãƒ—ãƒ¬ã‚¤ï¼ãƒ—ãƒ¬ã‚¤ï¼ãƒ—ãƒ¬ã‚¤ï¼ãƒ­ãƒƒã‚¯ï¼ Test";
+    const char* newFontName = "é»‘ä½“";
     const int32_t nCodePage = 936;
     DWORD BaseAddr, GDI32_DLL, KERNEL32_DLL;
 
@@ -84,7 +84,7 @@ namespace Hook {
 
     static void Init() {
         if (BaseAddr = (DWORD)GetModuleHandleA(NULL)) {
-            Mem::MemWrite(BaseAddr + 0x9BE88, &wdTitleName, 0x04); // ĞŞ¸Ä´°¿Ú±êÌâ
+            Mem::MemWrite(BaseAddr + 0x9BE88, &wdTitleName, 0x04); // ä¿®æ”¹çª—å£æ ‡é¢˜
             uint8_t code[] = {
                 0xFF, 0x75, 0xFC,       // push dword ptr ss:[ebp-0x04] <- offset
                 0xFF, 0x74, 0x24, 0x1C, // push dword ptr ss:[esp+0x1C] <- fileInfo
@@ -101,8 +101,8 @@ namespace Hook {
             intptr_t tarAddr = (intptr_t)hook_script_read;
             intptr_t rvaAddr = tarAddr - (orgAddr + 0x09) - 0x05;
             Mem::MemWrite((intptr_t)&code[0x0A], &rvaAddr, 0x04);
-            Mem::MemWrite((intptr_t)orgAddr, code, sizeof(code)); // hook½Å±¾¶ÁÈ¡
-            Mem::MemWrite(BaseAddr + 0x19967, &code[0x0E], 0x06); // È¥³ıĞ£ÑéÅĞ¶Ï
+            Mem::MemWrite((intptr_t)orgAddr, code, sizeof(code)); // hookè„šæœ¬è¯»å–
+            //Mem::MemWrite(BaseAddr + 0x19967, &code[0x0E], 0x06); // å»é™¤æ ¡éªŒåˆ¤æ–­
         }
         if (GDI32_DLL = (DWORD)GetModuleHandleA("gdi32.dll")) {
             OldCreateFontIndirectA = (Type::CreateFontIndirectA)GetProcAddress(

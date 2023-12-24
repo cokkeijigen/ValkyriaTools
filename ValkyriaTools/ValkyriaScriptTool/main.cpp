@@ -1,5 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define _VERSION_NAME "1.00"
+#define _GITHUB_URL "https://github.com/cokkeijigen/ValkyriaTools"
+#define _VERSION "1.00"
 #include <iostream>
 #include <windows.h>
 #include <filesystem>
@@ -138,12 +139,24 @@ namespace worker {
 		}
 	}
 
+	static void out_log(clock_t satrt, clock_t end) {
+		double run_time = (double)(end - satrt) / 1000;
+		printf("\n--------------------------\n");
+		printf("Time consuming: %f\n", run_time);
+		printf("ValkyriaScriptTool: %s\n", _VERSION);
+		printf("%s\n", _GITHUB_URL);
+		std::cin.ignore();
+	}
 };
 
 int main(int argc, char* argv[]) {
+	clock_t start_t = clock();
 	if (argc == 2) {
 		worker::start(argv[0], argv[1]);
-		system("pause");
 	}
+	else {
+		printf("Illegal parameter!!!\n");
+	}
+	worker::out_log(start_t, clock());
 	return 0;
 }
